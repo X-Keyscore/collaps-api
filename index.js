@@ -5,7 +5,7 @@ fs = require('fs'),
 express = require('express'),
 cors = require('cors');
 
-const io = require("socket.io")(8722, {
+const io = require("socket.io")(7254, {
 	cors: {
 		origin: "https://optimistic-bohr-e15b9b.netlify.app" //http://localhost:8000
 	}
@@ -35,7 +35,7 @@ const channelRouter = require('./routes/channel-router')
 const fileRouter = require('./routes/file-router')
 
 const app = express()
-const apiPort = 3000
+const apiPort = 7252
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
@@ -56,5 +56,5 @@ const sslServer = https.createServer({
 	cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
 }, app)
 
-sslServer.listen(3443, () => console.log('Secure server on port 3443'))
+sslServer.listen(apiPort, () => console.log('Secure server on port 3443'))
 //app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
