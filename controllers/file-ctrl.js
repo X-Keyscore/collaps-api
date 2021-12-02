@@ -34,8 +34,8 @@ getFileById_avatar = async (req, res) => {
     };
 
     // Chemin du fichier 'avatar' et lecture du fichier
-    const dir = dir + 'public/avatars/'
-    const files = fs.readdirSync(dir)
+    const files = fs.readdirSync(dir + 'public/avatars/')
+    console.log(files)
 
     // Si "tofindAvatar" reste à zéro je renvoie l'avatar par défaut
     var tofindAvatar = 0
@@ -70,8 +70,8 @@ getFileById_avatar = async (req, res) => {
 
 deleteFileById_avatar = (req, res) => {
     // Chemin du fichier 'avatar' et lecture du fichier
-    const dir = dir + 'public/avatars/'
-    const files = fs.readdirSync(dir)
+    const files = fs.readdirSync(dir + 'public/avatars/')
+    console.log(files)
 
     // Extensions disponibles
     const extensionTable = ['.jpg', '.jpeg', '.png', '.gif']
