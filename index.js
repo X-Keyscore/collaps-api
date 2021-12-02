@@ -4,7 +4,11 @@ app = express(),
 http = require("http").createServer(app),
 cors = require('cors');
 
-const io = require('socket.io')(http)
+const io = require('socket.io')(http, {
+	cors: {
+		origin: "https://optimistic-bohr-e15b9b.netlify.app" //http://localhost:8000
+	}
+});
 /*
 const io = require("socket.io")(7254, {
 	cors: {
