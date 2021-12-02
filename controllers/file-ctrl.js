@@ -1,11 +1,14 @@
-const multer = require('multer');
+const path = require('path');
 const fs = require('fs')
+const multer = require('multer');
+
+const dir = path.join(__dirname + '/../');
 
 createFile_avatar = (req, res) => {
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, `public/avatars/`)
+            cb(null, dir + `public/avatars/`)
         },
         filename: (req, file, cb) => {
             // Jsp, Name file
@@ -27,11 +30,11 @@ createFile_avatar = (req, res) => {
 
 getFileById_avatar = async (req, res) => {
     var options = {
-        root: 'public/avatars/'
+        root: dir + 'public/avatars/'
     };
 
     // Chemin du fichier 'avatar' et lecture du fichier
-    const dir = 'public/avatars/'
+    const dir = dir + 'public/avatars/'
     const files = fs.readdirSync(dir)
 
     // Si "tofindAvatar" reste à zéro je renvoie l'avatar par défaut
@@ -67,7 +70,7 @@ getFileById_avatar = async (req, res) => {
 
 deleteFileById_avatar = (req, res) => {
     // Chemin du fichier 'avatar' et lecture du fichier
-    const dir = 'public/avatars/'
+    const dir = dir + 'public/avatars/'
     const files = fs.readdirSync(dir)
 
     // Extensions disponibles
