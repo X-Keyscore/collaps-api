@@ -1,15 +1,16 @@
 const bodyParser = require('body-parser'),
-https = require("https"),
-path = require('path'),
-fs = require('fs'),
 express = require('express'),
+app = express(),
+http = require("http").createServer(app),
 cors = require('cors');
 
+const io = require('socket.io')(http)
+/*
 const io = require("socket.io")(7254, {
 	cors: {
 		origin: "https://optimistic-bohr-e15b9b.netlify.app" //http://localhost:8000
 	}
-});
+});*/
 
 io.on('connection', socket => {
 	const id = socket.handshake.query.id
@@ -34,7 +35,6 @@ const userRouter = require('./routes/user-router')
 const channelRouter = require('./routes/channel-router')
 const fileRouter = require('./routes/file-router')
 
-const app = express()
 const apiPort = 7252
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -51,10 +51,4 @@ app.use('/api', userRouter)
 app.use('/api', channelRouter)
 app.use('/api', fileRouter)
 
-const sslServer = https.createServer({
-	key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-	cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
-}, app)
-
-sslServer.listen(apiPort, () => console.log('Secure server on port 3443'))
-//app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+http.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
