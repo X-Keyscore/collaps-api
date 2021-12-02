@@ -6,7 +6,7 @@ cors = require('cors');
 
 const io = require('socket.io')(http, {
 	cors: {
-		origin: "https://optimistic-bohr-e15b9b.netlify.app" //http://localhost:8000
+		origin: "https://collaps.netlify.app/" //http://localhost:8000
 	}
 });
 /*
