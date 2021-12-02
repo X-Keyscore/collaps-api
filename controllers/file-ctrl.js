@@ -35,7 +35,6 @@ getFileById_avatar = async (req, res) => {
 
     // Chemin du fichier 'avatar' et lecture du fichier
     const files = fs.readdirSync(dir + 'public/avatars/')
-    console.log(files)
 
     // Si "tofindAvatar" reste à zéro je renvoie l'avatar par défaut
     var tofindAvatar = 0
@@ -53,6 +52,7 @@ getFileById_avatar = async (req, res) => {
                     return res.status(500).json(err)
                 } else {
                     // Le fichier a été envoyer avec succès
+                    return res.status(200).json({ success: true })
                 }
             });
         }
@@ -63,6 +63,7 @@ getFileById_avatar = async (req, res) => {
                 return res.status(500).json(err)
             } else {
                 // Le fichier a été envoyer avec succès
+                return res.status(200).json({ success: true })
             }
         });
     }
@@ -71,7 +72,6 @@ getFileById_avatar = async (req, res) => {
 deleteFileById_avatar = (req, res) => {
     // Chemin du fichier 'avatar' et lecture du fichier
     const files = fs.readdirSync(dir + 'public/avatars/')
-    console.log(files)
 
     // Extensions disponibles
     const extensionTable = ['.jpg', '.jpeg', '.png', '.gif']
@@ -79,16 +79,16 @@ deleteFileById_avatar = (req, res) => {
     for (const extension of extensionTable) {
         if (files.find(element => element == `${req.params.id}${extension}`)) {
             // Suppression du fichier
-            fs.unlink(`${dir}${req.params.id}${extension}`, function (err) {
+            fs.unlink(`${dir}public/avatars/${req.params.id}${extension}`, function (err) {
                 if (err) {
                     return res.status(500).json(err)
                 } else {
                     // Le fichier a été supprimé avec succès
+                    return res.status(200).json({ success: true })
                 }
             });
         }
     }
-    return res.status(200).json({ success: true })
 }
 
 module.exports = {
