@@ -6,14 +6,15 @@ createChannel = (req, res) => {
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a channel',
+            error: err,
+            message: "Toutes les informations ne sont pas fournies"
         })
     }
 
     const channel = new Channel(body)
 
     if (!channel) {
-        return res.status(400).json({ success: false, error: err })
+        return res.status(400).json({ success: false, error: err, message: "Toutes les informations ne sont pas fournies" })
     }
 
     channel
@@ -22,13 +23,14 @@ createChannel = (req, res) => {
             return res.status(201).json({
                 success: true,
                 id: channel._id,
-                message: 'channel created!',
+                message: "Le canal a été créée",
             })
         })
         .catch(error => {
             return res.status(400).json({
+                success: false,
                 error,
-                message: 'Channel not created!',
+                message: "Une erreur est survenue",
             })
         })
 }

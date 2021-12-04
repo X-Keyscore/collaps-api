@@ -6,15 +6,9 @@ cors = require('cors');
 
 const io = require('socket.io')(http, {
 	cors: {
-		origin: "https://collaps.netlify.app" //http://localhost:8000
+		origin: "http://localhost:8000" //http://localhost:8000 //https://collaps.netlify.app
 	}
 });
-/*
-const io = require("socket.io")(7254, {
-	cors: {
-		origin: "https://optimistic-bohr-e15b9b.netlify.app" //http://localhost:8000
-	}
-});*/
 
 io.on('connection', socket => {
 	const id = socket.handshake.query.id
@@ -35,17 +29,17 @@ io.on('connection', socket => {
 })
 
 const db = require('./db')
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
 const userRouter = require('./routes/user-router')
 const channelRouter = require('./routes/channel-router')
 const fileRouter = require('./routes/file-router')
 
-const apiPort = 7252
+const apiPort = 3000
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.json())
-
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.get('/', (req, res) => {
 	res.send('Hello World!')

@@ -10,7 +10,6 @@ router.put('/user/:id', UserCtrl.updateUser)
 
 router.delete('/user/:id', UserCtrl.deleteUser)
 
-router.get('/users', UserCtrl.getUsers)
 router.get('/user/id/:id', UserCtrl.getUserById)
 router.get('/user/pseudo/:pseudo', UserCtrl.getUserByPseudo)
 
