@@ -20,10 +20,13 @@ createFile_avatar = (req, res) => {
 
     upload(req, res, (err) => {
         if (err) {
-            return res.status(500).json(err)
+            return res
+                .status(500)
+                .json({ status: { success: false, message: "Une erreur est survenu" } })
         }
         // Le fichier a été upload avec succès
-        return res.status(200).send(req.files)
+        return res.status(200)
+            .send(req.files)
     })
 
 }
@@ -49,10 +52,19 @@ getFileById_avatar = async (req, res) => {
             tofindAvatar = 1
             return res.status(200).sendFile(file, options, function (err) {
                 if (err) {
-                    return res.status(500).json(err)
+                    return res
+                        .status(500)
+                        .json({ status: { success: false, message: "Une erreur est survenu" } })
                 } else {
                     // Le fichier a été envoyer avec succès
-                    return res.status(200).json({ success: true })
+                    return res
+                        .status(200)
+                        .json({
+                            status: {
+                                success: true,
+                                message: "Fichier envoyer avec succès"
+                            }
+                        })
                 }
             });
         }
@@ -60,10 +72,19 @@ getFileById_avatar = async (req, res) => {
     if (tofindAvatar === 0) {
         return res.status(200).sendFile('default_avatar.png', options, function (err) {
             if (err) {
-                return res.status(500).json(err)
+                return res
+                    .status(500)
+                    .json({ status: { success: false, message: "Une erreur est survenu" } })
             } else {
                 // Le fichier a été envoyer avec succès
-                return res.status(200).json({ success: true })
+                return res
+                    .status(200)
+                    .json({
+                        status: {
+                            success: true,
+                            message: "Fichier envoyer avec succès"
+                        }
+                    })
             }
         });
     }
@@ -81,10 +102,19 @@ deleteFileById_avatar = (req, res) => {
             // Suppression du fichier
             fs.unlink(`${dir}public/avatars/${req.params.id}${extension}`, function (err) {
                 if (err) {
-                    return res.status(500).json(err)
+                    return res
+                        .status(500)
+                        .json({ status: { success: false, message: "Une erreur est survenu" } })
                 } else {
                     // Le fichier a été supprimé avec succès
-                    return res.status(200).json({ success: true })
+                    return res
+                        .status(200)
+                        .json({
+                            status: {
+                                success: true,
+                                message: "Fichier supprimé avec succès"
+                            }
+                        })
                 }
             });
         }

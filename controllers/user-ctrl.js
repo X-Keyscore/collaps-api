@@ -1,134 +1,212 @@
 const User = require('../models/user-model')
 
 createUser = (req, res) => {
-    const body = req.body
 
+    const body = req.body
     if (!body) {
         return res.status(400).json({
-            success: false,
-            error: 'You must provide a user',
+            status: {
+                success: false,
+                message: "Vous devez fournir des données"
+            }
         })
     }
 
     const user = new User(body)
 
     if (!user) {
-        return res.status(400).json({ success: false, error: err })
+        return res.status(400).json({
+            status: {
+                success: false,
+                message: "Vous devez fournir des données valide"
+            }
+        })
     }
 
     user
         .save()
-        .then(() => {
+        .then(newUser => {
             return res.status(201).json({
-                success: true,
-                id: user._id,
-                message: 'User created!',
+                status: {
+                    success: true,
+                    message: "Utilisateur créé",
+                },
+                newUser
             })
         })
-        .catch(error => {
+        .catch(err => {
+            console.log(err)
             return res.status(400).json({
-                error,
-                message: 'User not created!',
+                status: {
+                    success: false,
+                    message: "Une erreur est survenu"
+                }
             })
         })
 }
 
-// functionName(id, data: { })
 updateUser = async (req, res) => {
-    const body = req.body
 
+    const body = req.body
     if (!body) {
         return res.status(400).json({
-            success: false,
-            error: 'You must provide a body to update',
+            status: {
+                success: false,
+                message: 'Vous devez fournir des données',
+            }
         })
     }
 
-    User.findOne({ id: req.params.id }, (err, user) => {
+    await User.findOne({ id: req.params.id }, (err, user) => {
         if (err) {
-            return res.status(404).json({
-                err,
-                message: 'User not found!',
+            console.log(err)
+            return res.status(400).json({
+                status: {
+                    success: false,
+                    message: "Une erreur est survenu"
+                }
             })
         }
 
-        user.id = body.data.id ? body.data.id : user.id;
-        user.pseudo = body.data.pseudo ? body.data.pseudo : user.pseudo;
-        user.password = body.data.password ? body.data.password : user.password;
-        user.activity = body.data.activity ? body.data.activity : user.activity;
-        user.channels = body.data.channels ? body.data.channels : user.channels;
+        if (!user) {
+            return res.status(404).json({
+                status: {
+                    success: false,
+                    message: "L'utilisateur n'a pas été trouvé"
+                }
+            })
+        }
+
+        user.pseudo = body.pseudo ? body.pseudo : user.pseudo;
+        user.password = body.password ? body.password : user.password;
+        user.activity = body.activity ? body.activity : user.activity;
+        user.channels = body.channels ? body.channels : user.channels;
 
         user
             .save()
             .then(() => {
                 return res.status(200).json({
-                    success: true,
-                    message: 'User updated!',
+                    status: {
+                        success: true,
+                        message: "Utilisateur mise à jour"
+                    },
+                    user
                 })
             })
-            .catch(error => {
-                return res.status(404).json({
-                    error,
-                    message: 'User not updated!',
+            .catch(err => {
+                console.log(err)
+                return res.status(400).json({
+                    status: {
+                        success: false,
+                        message: "Une erreur est survenu"
+                    }
                 })
             })
     })
 }
 
-deleteUser = async (req, res) => {
-    await User.findOneAndDelete({ _id: req.params.id }, (err, user) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-
-        if (!user) {
-            return res
-                .status(404)
-                .json({ success: false, error: `User not found` })
-        }
-
-        return res.status(200).json({ success: true, data: user })
-    }).catch(err => console.log(err))
-}
-
 getUserById = async (req, res) => {
     await User.findOne({ id: req.params.id }, (err, user) => {
         if (err) {
-            return res.status(400).json({ success: false, error: err })
+            console.log(err)
+            return res.status(400).json({
+                status: {
+                    success: false,
+                    message: "Une erreur est survenu"
+                }
+            })
         }
 
         if (user === null) {
-            return  res.status(200).json({ 
-                successRequest: true,
-                successGet: false,
-                user
+            return res.status(200).json({
+                status: {
+                    success: true,
+                    message: "L'utilisateur n'a pas été trouvé"
+                },
+                user: null
             })
         }
 
         return res.status(200).json({
-            successRequest: true,
-            successGet: true,
+            status: {
+                success: true,
+                message: "Utilisateur trouvé"
+            },
             user
         })
-
     }).catch(err => console.log(err))
 }
 
 getUserByPseudo = async (req, res) => {
     await User.findOne({ pseudo: req.params.pseudo }, (err, user) => {
         if (err) {
-            return res.status(400).json({ success: false, error: err })
+            console.log(err)
+            return res.status(400).json({
+                status: {
+                    success: false,
+                    message: "Une erreur est survenu"
+                }
+            })
         }
 
-        return res.status(200).json({ success: true, data: user })
+        if (!user) {
+            return res.status(200).json({
+                status: {
+                    success: true,
+                    message: "L'utilisateur n'a pas été trouvé"
+                },
+                user: null
+            })
+        }
+
+        return res.status(200).json({
+            status: {
+                success: true,
+                message: "Utilisateur trouvé"
+            },
+            user
+        })
+    }).catch(err => console.log(err))
+}
+
+deleteUser = async (req, res) => {
+    await User.findOneAndDelete({ _id: req.params.id }, (err, user) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                status: {
+                    success: false,
+                    message: "Une erreur est survenu"
+                }
+            })
+        }
+
+        if (!user) {
+            return res.status(404).json({
+                status: {
+                    success: false,
+                    message: "L'utilisateur n'a pas été trouvé"
+                }
+            })
+        }
+
+        return res.status(200).json({
+            status: {
+                success: true,
+                message: "Utilisateur supprimé"
+            }
+        })
     }).catch(err => console.log(err))
 }
 
 
 module.exports = {
     createUser,
+
     updateUser,
-    deleteUser,
+
     getUserById,
-    getUserByPseudo
+    getUserByPseudo,
+
+    deleteUser
 }
