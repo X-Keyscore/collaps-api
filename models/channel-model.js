@@ -15,10 +15,22 @@ const Channel = new Schema(
     {
         id: { type: String, required: true },
         type: { type: String, required: true },
+        recipients: [recipients],
+        messages: { type: Array, required: false }
+    },
+    { timestamps: true }
+)
+
+/*
+const Channel = new Schema(
+    {
+        id: { type: String, required: true },
+        type: { type: String, required: true },
         recipients: { type: Array, required: true },
         messages: { type: Array, required: false }
     },
     { timestamps: true }
 )
+*/
 
 module.exports = mongoose.model('channels', Channel)

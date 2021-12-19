@@ -123,6 +123,8 @@ deleteFileById_avatar = (req, res) => {
 
 module.exports = {
     createFile_avatar,
+
     getFileById_avatar,
+    
     deleteFileById_avatar
 }
