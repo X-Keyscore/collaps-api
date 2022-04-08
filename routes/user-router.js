@@ -4,7 +4,9 @@ const UserCtrl = require('../controllers/user-ctrl')
 
 const router = express.Router()
 
-router.post('/user', UserCtrl.createUser)
+router.post('/user/autologin', UserCtrl.autologinUser)
+router.post('/user/login', UserCtrl.loginUser)
+router.post('/user/registering', UserCtrl.registeringUser)
 
 router.put('/user/:id', UserCtrl.updateUser)
 

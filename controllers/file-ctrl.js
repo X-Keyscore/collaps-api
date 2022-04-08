@@ -49,42 +49,25 @@ getFileById_avatar = async (req, res) => {
 
         // Je teste si l'id correspond a celle du nom
         if (req.params.id == fileId[0]) {
-            tofindAvatar = 1
             return res.status(200).sendFile(file, options, function (err) {
                 if (err) {
-                    return res
-                        .status(500)
-                        .json({ status: { success: false, message: "Une erreur est survenu" } })
+                    console.log("Une erreur est survenu")
                 } else {
                     // Le fichier a été envoyer avec succès
-                    return res
-                        .status(200)
-                        .json({
-                            status: {
-                                success: true,
-                                message: "Fichier envoyer avec succès"
-                            }
-                        })
+                    console.log("Fichier envoyer avec succès")
                 }
             });
+        } else {
+            tofindAvatar = tofindAvatar + 1
         }
     }
-    if (tofindAvatar === 0) {
+    if (files.length === tofindAvatar) {
         return res.status(200).sendFile('default_avatar.png', options, function (err) {
             if (err) {
-                return res
-                    .status(500)
-                    .json({ status: { success: false, message: "Une erreur est survenu" } })
+                return console.log("Une erreur est survenu")
             } else {
                 // Le fichier a été envoyer avec succès
-                return res
-                    .status(200)
-                    .json({
-                        status: {
-                            success: true,
-                            message: "Fichier envoyer avec succès"
-                        }
-                    })
+                return console.log("Fichier envoyer avec succès")
             }
         });
     }
@@ -97,6 +80,7 @@ deleteFileById_avatar = (req, res) => {
     // Extensions disponibles
     const extensionTable = ['.jpg', '.jpeg', '.png', '.gif']
     // Je boucle toutes les extensions
+    var i = 0
     for (const extension of extensionTable) {
         if (files.find(element => element == `${req.params.id}${extension}`)) {
             // Suppression du fichier
@@ -117,6 +101,17 @@ deleteFileById_avatar = (req, res) => {
                         })
                 }
             });
+        } else {
+            i++
+            console.log(i)
+            if (extensionTable.length === i) {
+                return res.status(200).json({
+                    status: {
+                        success: true,
+                        message: "Aucune image n'a été trouvé"
+                    }
+                })
+            }
         }
     }
 }

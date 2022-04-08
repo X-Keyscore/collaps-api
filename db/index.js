@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 mongoose
 	.connect('mongodb://localhost:27017/collaps', { useNewUrlParser: true, useUnifiedTopology: true })
 	.catch(e => {
-		console.error('Connection error', e.message)
+		console.error('MongoDB connection error:', e.message)
 	})
 
 const db = mongoose.connection

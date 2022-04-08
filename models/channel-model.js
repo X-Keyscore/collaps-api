@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const recipients = new Schema({
-    id: { type: String, required: true },
-});
-
 const messages = new Schema({
     senderId: { type: String, required: true },
     sendAt: { type: Date, required: true },
@@ -15,7 +11,7 @@ const Channel = new Schema(
     {
         id: { type: String, required: true },
         type: { type: String, required: true },
-        recipients: [recipients],
+        recipients: { type: Array, required: true },
         messages: { type: Array, required: false }
     },
     { timestamps: true }
